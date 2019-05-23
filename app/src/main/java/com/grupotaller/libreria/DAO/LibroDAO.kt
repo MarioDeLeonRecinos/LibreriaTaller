@@ -15,7 +15,7 @@ interface LibroDAO {
     @Insert
     fun Insert(vararg libro: Libro)
 
-    @Query("SELECT * FROM Libro where Favorito=0")
+    @Query("SELECT * FROM Libro where Favorito=1")
     fun getFavorito(): LiveData<List<Libro>>
 
     @Query("SELECT * FROM Libro where Titulo LIKE :nombre")
