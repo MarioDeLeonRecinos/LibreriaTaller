@@ -15,7 +15,7 @@ class AutorViewModel(application: Application) : AndroidViewModel(application) {
     val allAutors: LiveData<List<Autor>>;
 
     init{
-        val autorsdao = AutorRoomDatabase.getDatabase(application).autorDAO();
+        val autorsdao = AutorRoomDatabase.getDatabase(application,viewModelScope).autorDAO();
         repository = AutorRepository(autorsdao);
         allAutors = repository.allAutors;
 
