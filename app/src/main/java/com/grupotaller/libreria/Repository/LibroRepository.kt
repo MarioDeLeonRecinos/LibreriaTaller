@@ -20,7 +20,7 @@ class LibroRepository(val librodao: LibroDAO) {
     }
 
     @WorkerThread
-    suspend fun search(nombre: String): List<Libro> {
+    suspend fun search(nombre: String){
         allLibros=librodao.getSearch(nombre);
     }
     
