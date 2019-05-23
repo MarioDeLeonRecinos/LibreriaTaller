@@ -19,7 +19,7 @@ interface LibroDAO {
     fun getFavorito(): LiveData<List<Libro>>
 
     @Query("SELECT * FROM Libro where Titulo LIKE :nombre")
-    fun getSearch(vararg nombre: String): List<Libro>
+    fun getSearch(vararg nombre: String): LiveData<List<Libro>>
 
     @Query("DELETE FROM Libro")
     fun deleteAll()
