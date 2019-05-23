@@ -5,25 +5,29 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.grupotaller.libreria.DAO.TagDAO
-import com.grupotaller.libreria.Entity.Tag
+import com.grupotaller.libreria.DAO.*
+import com.grupotaller.libreria.Entity.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Tag::class], version = 1, exportSchema = false)
-abstract class TagRoomDatabase :RoomDatabase(){
+@Database(entities = arrayOf(Libro::class,Autor::class,Tag::class,AutorXLibro::class,TagXLibro::class), version = 1, exportSchema = false)
+abstract class LibreriaRoomDatabase : RoomDatabase() {
 
+    abstract fun LibroDAO(): LibroDAO
+    abstract fun AutorDAO(): AutorDAO
     abstract fun TagDAO(): TagDAO
+    abstract fun AutorXLibroDAO(): AutorXLibroDAO
+    abstract fun TagXLibroDAO(): TagXLibroDAO
 
     companion object {
         @Volatile
-        private var INSTANCE: TagRoomDatabase? = null
+        private var INSTANCE: LibreriaRoomDatabase? = null
 
         fun getDatabase(
             context: Context,
             scope: CoroutineScope
-        ): TagRoomDatabase {
+        ): LibreriaRoomDatabase {
             val tempInstance = INSTANCE
             if (tempInstance != null) {
                 return tempInstance
@@ -31,16 +35,16 @@ abstract class TagRoomDatabase :RoomDatabase(){
             synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    TagRoomDatabase::class.java,
+                    LibreriaRoomDatabase::class.java,
                     "Libreria"
-                ).addCallback(TagDatabaseCallback(scope))
+                ).addCallback(LibroDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
                 return instance
             }
         }
 
-        private class TagDatabaseCallback(
+        private class LibroDatabaseCallback(
             private val scope: CoroutineScope
         ) : RoomDatabase.Callback() {
 
@@ -48,19 +52,18 @@ abstract class TagRoomDatabase :RoomDatabase(){
                 super.onOpen(db)
                 INSTANCE?.let { database ->
                     scope.launch(Dispatchers.IO) {
-                        populateDatabase(database.TagDAO())
+                        populateDatabase(database.LibroDAO())
                     }
                 }
             }
         }
 
-        suspend fun populateDatabase(tagDAO: TagDAO) {
-            tagDAO.deleteAll()
-
-            var tag = Tag(0, "comedia")
-            tagDAO.Insert(tag)
-            tag = Tag(0, "misterio")
-            tagDAO.Insert(tag)
+        suspend fun populateDatabase(libroDAO: LibroDAO) {
+            libroDAO.deleteAll()
+            var libro = Libro(0, "Luna de Pluton",1548,"Mancos","direccion a imagen","Una pendejada",false)
+            libroDAO.Insert(libro)
+            libro = Libro(0, "Lobos del calla",1482,"Debolsillo","direccion a imagen","Otro libro",false)
+            libroDAO.Insert(libro)
         }
     }
 }
