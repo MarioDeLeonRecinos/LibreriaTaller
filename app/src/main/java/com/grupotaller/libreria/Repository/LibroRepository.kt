@@ -6,28 +6,28 @@ import com.grupotaller.libreria.DAO.LibroDAO
 import com.grupotaller.libreria.Entity.Libro
 
 class LibroRepository(val librodao: LibroDAO) {
-    
+
     var allLibros: LiveData<List<Libro>> = librodao.getAll();
-    
+
     @WorkerThread
-    suspend fun insert(libro: Libro){
+    suspend fun insert(libro: Libro) {
         librodao.Insert(libro);
     }
 
     @WorkerThread
-    suspend fun deleteAll(){
+    suspend fun deleteAll() {
         librodao.deleteAll();
     }
 
-    fun search(nombre: String){
-        allLibros=librodao.getSearch(nombre);
+    fun search(nombre: String): LiveData<List<Libro>> {
+        return librodao.getSearch(nombre);
     }
 
-    fun getFavoritos(){
-        allLibros=librodao.getFavorito();
+    fun getFavoritos(): LiveData<List<Libro>> {
+        return librodao.getFavorito();
     }
 
-    fun getAll(){
-        allLibros=librodao.getAll();
+    fun getAll(): LiveData<List<Libro>> {
+        return librodao.getAll();
     }
 }

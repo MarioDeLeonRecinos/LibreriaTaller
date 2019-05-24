@@ -6,10 +6,10 @@ import com.grupotaller.libreria.DAO.TagDAO
 import com.grupotaller.libreria.Entity.Tag
 
 class TagRepository(val tagdao : TagDAO) {
-    val alltags : LiveData<List<Tag>> = tagdao.getAll();
+    val allTags : LiveData<List<Tag>> = tagdao.getAll();
 
     @WorkerThread
-    suspend fun insert(tag: Tag) {
+    suspend fun insert(tag:Tag) {
         tagdao.Insert(tag);
     }
 
@@ -18,5 +18,8 @@ class TagRepository(val tagdao : TagDAO) {
         tagdao.deleteAll();
     }
 
+    fun getALL():LiveData<List<Tag>>{
+        return tagdao.getAll()
+    }
 
 }
