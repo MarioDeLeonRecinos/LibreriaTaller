@@ -17,12 +17,10 @@ import kotlinx.coroutines.launch
 class AutorViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: AutorRepository;
-    private val repositoryjoin: AutorXLibroRepository;
 
     init {
-        val autorsdao = LibreriaRoomDatabase.getDatabase(application, viewModelScope);
-        repository = AutorRepository(autorsdao.AutorDAO());
-        repositoryjoin = AutorXLibroRepository(autorsdao.AutorXLibroDAO())
+        val autorsdao = LibreriaRoomDatabase.getDatabase(application, viewModelScope)
+        repository = AutorRepository(autorsdao.AutorDAO())
 
     }
 
@@ -32,14 +30,11 @@ class AutorViewModel(application: Application) : AndroidViewModel(application) {
 
     fun insert(autor: Autor) = viewModelScope.launch(Dispatchers.IO)
     {
-        repository.insert(autor);
+        repository.insert(autor)
     }
 
-    fun getAutorID(id: Int): LiveData<List<Autor>> {
-        return repositoryjoin.getAutores(id)
-    }
 
     suspend fun deleteAll(){
-        repository.deleteAll();
+        repository.deleteAll()
     }
 }

@@ -12,20 +12,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AutorXLibroViewModel (app: Application): AndroidViewModel(app){
-    private val repository: AutorXLibroRepository;
+
+    private val repository: AutorXLibroRepository
 
     init {
-        val autorsxlibrosdao = LibreriaRoomDatabase.getDatabase(app, viewModelScope);
-        repository = AutorXLibroRepository(autorsxlibrosdao.AutorXLibroDAO());
+        val autorsxlibrosdao = LibreriaRoomDatabase.getDatabase(app, viewModelScope)
+        repository = AutorXLibroRepository(autorsxlibrosdao.AutorXLibroDAO())
     }
 
     fun insert(axl: AutorXLibro) = viewModelScope.launch(Dispatchers.IO)
     {
-        repository.insert(axl);
+        repository.insert(axl)
     }
 
     suspend fun deleteAll(){
-        repository.deleteAll();
+        repository.deleteAll()
     }
 
     fun getAutores(id:Int): LiveData<List<Autor>> {

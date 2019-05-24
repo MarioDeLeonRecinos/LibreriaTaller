@@ -12,13 +12,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TagViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: TagRepository;
-    private val repositoryjoin: TagXLibroRepository;
+
+    private val repository: TagRepository
 
     init {
-        val tagsdao = LibreriaRoomDatabase.getDatabase(application, viewModelScope);
-        repository = TagRepository(tagsdao.TagDAO());
-        repositoryjoin = TagXLibroRepository(tagsdao.TagXLibroDAO())
+        val tagsdao = LibreriaRoomDatabase.getDatabase(application, viewModelScope)
+        repository = TagRepository(tagsdao.TagDAO())
 
     }
 
@@ -28,14 +27,10 @@ class TagViewModel(application: Application) : AndroidViewModel(application) {
 
     fun insert(tag: Tag) = viewModelScope.launch(Dispatchers.IO)
     {
-        repository.insert(tag);
-    }
-
-    fun getAutorID(id: Int): LiveData<List<Tag>> {
-        return repositoryjoin.getTags(id)
+        repository.insert(tag)
     }
 
     suspend fun deleteAll(){
-        repository.deleteAll();
+        repository.deleteAll()
     }
 }
