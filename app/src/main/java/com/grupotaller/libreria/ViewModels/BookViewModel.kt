@@ -33,4 +33,8 @@ class BookViewModel(app:Application): AndroidViewModel(app) {
     fun getAll(): LiveData<List<Libro>>{
         return repository.getAll()
     }
+
+    suspend fun deleteAll(){
+        repository.deleteAll();
+    }
 }

@@ -34,4 +34,8 @@ class TagViewModel(application: Application) : AndroidViewModel(application) {
     fun getAutorID(id: Int): LiveData<List<Tag>> {
         return repositoryjoin.getTags(id)
     }
+
+    suspend fun deleteAll(){
+        repository.deleteAll();
+    }
 }
