@@ -10,32 +10,36 @@ import com.grupotaller.libreria.RoomDatabase.LibreriaRoomDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class BookViewModel(app:Application): AndroidViewModel(app) {
+class BookViewModel(app: Application) : AndroidViewModel(app) {
 
-    private val repository : LibroRepository
+    private val repository: LibroRepository
 
     init {
         val librodao = LibreriaRoomDatabase.getDatabase(app, viewModelScope).LibroDAO()
         repository = LibroRepository(librodao)
     }
 
-    fun insert(libro:Libro)= viewModelScope.launch(Dispatchers.IO){
+    fun insert(libro: Libro) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(libro)
     }
 
-    fun getsearch (nombre:String) : LiveData<List<Libro>>{
+    fun getsearch(nombre: String): LiveData<List<Libro>> {
         return repository.search(nombre)
     }
 
-    fun getFavorito(): LiveData<List<Libro>>{
-        return  repository.getFavoritos()
+    fun getFavorito(): LiveData<List<Libro>> {
+        return repository.getFavoritos()
     }
 
-    fun getAll(): LiveData<List<Libro>>{
+    fun getAll(): LiveData<List<Libro>> {
         return repository.getAll()
     }
 
-    suspend fun deleteAll(){
+    fun deleteAll(){
         repository.deleteAll();
+    }
+
+    fun updateFav(idl: Int, Boolean: Int) = viewModelScope.launch(Dispatchers.IO) {
+        repository.updateFav(idl, Boolean)
     }
 }
